@@ -19,11 +19,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/main")
-                .hasAnyRole("ROLE_USER")
-                .and().formLogin().
-                loginPage("/login")
-                .and().logout()
-                .permitAll()
+                .access("hasRole('ROLE_USER')")
+                .and().formLogin().loginPage("/login")
+                .loginProcessingUrl("/j_spring_security_check")
+                .failureUrl("/login?error")
+                .usernameParameter("username").passwordParameter("password")
+                .and().logout().logoutSuccessUrl("/login?logout")
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
                 .and().csrf();
@@ -34,6 +35,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(this.dataSource)
                 .usersByUsernameQuery("select email, password, enabled from kitabxana.user_info where email=? ")
-                .authoritiesByUsernameQuery("select email, authority from kitabxana.authorities where email=? ");
+                .authoritiesByUsernameQuery("select email, role from kitabxana.authorities where email=? ");
     }
 }

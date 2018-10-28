@@ -12,7 +12,7 @@
     <body>
 
         <c:url value="/j_spring_security_check" var="loginUrl" />
-        <form  action="/main" method='POST' class="box login">
+        <form  action="${loginUrl}" method='POST' class="box login">
             <fieldset class="boxBody">
 
                 <label>

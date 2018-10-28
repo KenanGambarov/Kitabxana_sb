@@ -13,16 +13,6 @@ import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 @Configuration
 @ComponentScan(basePackages = "com.kitabxana_sb.*")
 public class ResolverConfig extends WebMvcConfigurerAdapter {
-//
-//    @Bean(name = "dataSource")
-//	public DriverManagerDataSource dataSource() {
-//	    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-//	    driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//	    driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/dummy");
-//	    driverManagerDataSource.setUsername("root");
-//	    driverManagerDataSource.setPassword("123456");
-//	    return driverManagerDataSource;
-//	}
         
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

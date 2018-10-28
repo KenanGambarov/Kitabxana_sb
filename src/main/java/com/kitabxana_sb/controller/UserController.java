@@ -5,15 +5,11 @@ import com.kitabxana_sb.impl.Main;
 import com.kitabxana_sb.service.Registr_service;
 import com.kitabxana_sb.tables.Book;
 import com.kitabxana_sb.tables.User_info;
-import java.io.PrintStream;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -23,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,7 +32,7 @@ public class UserController {
     Main_Dao md;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @RequestMapping(value = {"/", "/login"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/", "/login"}, method = {RequestMethod.GET})
     public ModelAndView main2(@RequestParam(value = "error", required = false) String error) {
         ModelAndView map = new ModelAndView();
         if (error != null) {
@@ -59,13 +56,13 @@ public class UserController {
         });
     }
 
-    @RequestMapping(value = {"/registration"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET}, produces = {"text/plain;charset=UTF-8"})
+    @RequestMapping(value = {"/registration"}, method = {RequestMethod.GET}, produces = {"text/plain;charset=UTF-8"})
     public String Register(User_info user, ModelMap map) {
         map.addAttribute("user", user);
         return "registration";
     }
 
-    @RequestMapping(value = {"/registration"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST}, produces = {"text/plain;charset=UTF-8"})
+    @RequestMapping(value = {"/registration"}, method = {RequestMethod.POST}, produces = {"text/plain;charset=UTF-8"})
     public String Registr(@Validated @ModelAttribute("user") User_info user, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
             return "registration";
@@ -74,9 +71,9 @@ public class UserController {
         return "redirect:login";
     }
 
-    @RequestMapping(value = {"/main"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET, org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/main"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView main(@ModelAttribute("main") Main main, ModelAndView model, HttpServletRequest request) {
-        printUserDetails();
+//        printUserDetails();
         List<Book> list1 = this.md.getbookList(request);
         List<Book> list2 = this.md.getbookByAuthor();
         List<Book> list3 = this.md.getbookByTitle();
@@ -87,7 +84,7 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping(value = {"/downloadPDF"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/downloadPDF"}, method = {RequestMethod.GET})
     public ModelAndView downloadPDF(HttpServletRequest request, Model model) {
         List<Book> list1 = this.md.getbookList(request);
         return new ModelAndView("pdfView", "book_list", list1);
